@@ -1,8 +1,8 @@
-# FrCable
+# FrCable ruby
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fr_cable`. To experiment with that code, run `bin/console` for an interactive prompt.
+It's http rake based middleware server impementation for fr-cable-server.
 
-TODO: Delete this and the text above, and describe your gem
+`!!!WARNING!!!` The project is at a very early stage of development, it can be used, but there is no guarantee that it works as you expect and that I will not abandon it tomorrow
 
 ## Installation
 
@@ -20,25 +20,48 @@ Or install it yourself as:
 
     $ gem install fr_cable
 
+Add this line into you `config/application.rb`
+
+```
+config.middleware.use FrCable::Rack
+```
+
+Then touch `app/channels/application_cable/channel.rb, that contain`
+```
+class ApplicationCable::Channel < FrCable::Channel::Base
+
+end
+```
+
+and `app/channels/application_cable/connection.rb`
+
+```
+class ApplicationCable::Connection < FrCable::Connection::Base
+
+end
+```
+
+
 ## Usage
 
-TODO: Write usage instructions here
+You can define channels like in action_cable gem.
 
-## Development
+`app/channels/comment_channel.rb`
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
+class OrderChannel < ApplicationCable::Channel
+  def receive message
+    broadcast(params[:room], message)
+  end
+end
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Run fr-cable-server dockerfile near of you app and you already can messaging through fr-cable-js-client npm package.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/fr_cable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/fr_cable/blob/master/CODE_OF_CONDUCT.md).
-
+No needed to contribute now
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the FrCable project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/fr_cable/blob/master/CODE_OF_CONDUCT.md).
